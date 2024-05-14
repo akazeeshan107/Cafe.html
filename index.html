@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Cafe</h1>
+        
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Menu</a></li>
+            <li><a href="{{ url_for('show_cart') }}">Cart</a></li>
+        </ul>
+    </nav>
+    <section id="menu">
+        <h2>Menu</h2>
+        <div class="menu-item">
+            <h3>Item 1</h3>
+            <p>Description of Masala Dosa.</p>
+            <p>Price: $10</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="item" value="Item 1">
+                <input type="hidden" name="price" value="10">
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+        <div class="menu-item">
+            <h3>Item 2</h3>
+            <p>Description of Paneer Dosa</p>
+            <p>Price: $8</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="item" value="Item 2">
+                <input type="hidden" name="price" value="8">
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+        <!-- More menu items -->
+    </section>
+</body>
+</html>

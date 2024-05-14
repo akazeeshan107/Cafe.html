@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Your Cart</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Menu</a></li>
+            <li><a href="{{ url_for('show_cart') }}">Cart</a></li>
+        </ul>
+    </nav>
+    <section id="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items">
+            {% set grouped_items = {} %}
+            {% for item in cart %}
+                {% set item_name = item.item %}
+                {% if item_name not in grouped_items %}
+                    {% set _ = grouped_items.update({item_name: {'quantity': 1, 'price': item.price}}) %}
+                {% else %}
+                    {% set _ = grouped_items[item_name].update({'quantity': grouped_items[item_name]['quantity'] + 1}) %}
+                {% endif %}
+            {% endfor %}
+            {% for item_name, details in grouped_items.items() %}
+                {% set total_cost = details['quantity'] * details['price'] %}
+                <li>{{ item_name }} - {{ details['quantity'] }} ({{ total_cost }})</li>
+            {% endfor %}
+        </ul>
+        <p>Total: ${{ total_price }}</p>
+        <form action="{{ url_for('clear_cart') }}" method="post">
+            <button type="submit">Clear Cart</button>
+        </form>
+        {% if total_price > 0 %}
+            <form action="{{ url_for('checkout') }}" method="get">
+                <button type="submit">Checkout</button>
+            </form>
+        {% else %}
+            <button disabled>Checkout</button>
+        {% endif %}
+        <form action="{{ url_for('index') }}" method="get">
+            <button type="submit">Continue Shopping</button>
+        </form>
+    </section>
+</body>
+</html>
